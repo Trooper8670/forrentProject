@@ -1,0 +1,12 @@
+{% extends 'ads/base.html' %}
+
+{% block content %}
+<h1>Register</h1>
+<hr>
+
+<form action="{% url 'phone_register' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">submit</button>
+</form>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'ads/base.html' %}
+
+{% block content %}
+    {% if form.errors %}
+        <p>{{ form.errors.error }}</p>
+    {% endif %}
+
+    <form action="{% url 'phone_login' %}" method="post">
+        {{ form }}
+        {% csrf_token %}
+        <button type="submit">submit</button>
+    </form>
+{% endblock %}
