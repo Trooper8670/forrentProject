@@ -1,9 +1,0 @@
-{% extends 'ads/base.html' %}
-
-{% block content %}
-    <div class="row">
-        <p>Ваша ссылка не корректна, залогиньтесь снова</p>
-        <a href="{% url 'email_login' %}">Email Login</a>
-        <a href="{% url 'phone_login' %}">Phone Login</a>
-    </div>
-{% endblock %}
