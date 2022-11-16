@@ -1,12 +1,26 @@
 from abc import ABC
+
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth import login, authenticate
-from django.contrib.auth import get_user_model
+from .serializers import EmailUserSerializer, PhoneUserSerializer
+from rest_framework import generics
+from django.contrib.auth.models import User
 
-User = get_user_model()
+
+class EmailRegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = EmailUserSerializer
+
+
+class PhoneRegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = PhoneUserSerializer
 
 
 class Login(APIView, TokenObtainPairSerializer, ABC):
