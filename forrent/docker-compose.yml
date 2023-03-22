@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  forrent_postgres:
+    image: postgres:13.3
+    container_name: forrent_postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env.db
+
+  forrent_project:
+    build:
+      context: .
+    container_name: forrent_django
+    ports:
+      - 8000:8000
+    depends_on:
+      - forrent_postgres
+    volumes:
+      - static_volume:/forrent/static
+      - media_volume:/forrent/media
+    env_file:
+      - .env
+    command: gunicorn forrent.wsgi:application --bind 0.0.0.0:8000
+
+  nginx:
+    build:
+      dockerfile: ./Dockerfile
+      context: ./docker/nginx/
+    container_name: forrent_nginx
+    image: forrent_nginx
+    volumes:
+      - static_volume:/forrent/static
+      - media_volume:/forrent/media
+    depends_on:
+      - forrent_project
+    ports:
+      - "${NGINX_EXTERNAL_PORT}:80"
+
+volumes:
+  static_volume:
+  media_volume:
+  postgres_data:
